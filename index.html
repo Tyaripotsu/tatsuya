@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121212">
+  <title>TAKAISHI | 大野物産株式会社</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #121212;
+      --panel: #202020;
+      --panel-2: #181818;
+      --text: #f5f5f5;
+      --muted: #b3b3b3;
+      --green: #1ed760;
+      --border: #343434;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                   "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+    }
+    .player {
+      width: min(100%, 1080px);
+      margin: 0 auto;
+      padding: 24px;
+      background: linear-gradient(145deg, #242424, #191919);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, .82fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+    .music { min-width: 0; }
+    .track {
+      display: grid;
+      grid-template-columns: minmax(120px, 42%) minmax(0, 1fr);
+      gap: 22px;
+      align-items: center;
+    }
+    .cover {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 10px;
+      background: #333;
+    }
+    .eyebrow {
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 10px 0 8px;
+      font-size: clamp(22px, 3.5vw, 36px);
+      line-height: 1.12;
+      overflow-wrap: anywhere;
+    }
+    .artist { color: var(--muted); font-size: 15px; }
+    audio { display: block; width: 100%; margin-top: 22px; }
+    .lyrics-panel {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 320px;
+      padding: 18px;
+      border-radius: 12px;
+      background: rgba(0,0,0,.23);
+    }
+    .lyrics-heading {
+      margin: 0 0 12px;
+      font-size: 16px;
+      letter-spacing: .04em;
+    }
+    .lyrics {
+      min-height: 0;
+      max-height: 360px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-right: 10px;
+      color: #e7e7e7;
+      font-size: 14px;
+      line-height: 1.95;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      scrollbar-width: thin;
+      scrollbar-color: #666 transparent;
+    }
+    .lyrics::-webkit-scrollbar { width: 6px; }
+    .lyrics::-webkit-scrollbar-thumb { background: #666; border-radius: 10px; }
+    .note {
+      margin: 18px 0 0;
+      color: #888;
+      font-size: 11px;
+      line-height: 1.6;
+      text-align: center;
+    }
+    @media (max-width: 700px) {
+      body { padding: 10px 8px; }
+      .player { padding: 16px; border-radius: 14px; }
+      .layout { grid-template-columns: 1fr; gap: 22px; }
+      .track { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+      .cover { width: min(100%, 360px); margin: 0 auto; }
+      .info { text-align: center; }
+      h1 { font-size: 27px; }
+      audio { margin-top: 18px; }
+      .lyrics-panel { min-height: 0; padding: 16px; }
+      .lyrics { max-height: 280px; }
+    }
+    .skip-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  margin-bottom: 8px;
+}
+
+.skip-buttons button {
+  background: #202832;
+  color: white;
+  border: 1px solid #46515f;
+  border-radius: 20px;
+  padding: 9px 16px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.skip-buttons button:hover {
+  background: #344252;
+}
+  </style>
+</head>
+<body>
+  <main class="player">
+    <div class="layout">
+      <section class="music" aria-label="音楽プレイヤー">
+        <div class="track">
+          <img class="cover" src="TAKAISHI_logo.png" alt="アートカバー">
+          <div class="info">
+            <div class="eyebrow">Oh-No Corp RECORDS</div>
+            <h1>TAKAISHI</h1>
+            <div class="artist">大野物産株式会社</div>
+            <div class="skip-buttons">
+  <button type="button" onclick="skipAudio(-10)">
+    -10 sec
+  </button>
+  <button type="button" onclick="skipAudio(10)">
+    +10 sec
+  </button>
+</div>
+          </div>
+        </div>
+
+        <audio id="music-player" controls preload="metadata">
+          <source src="TAKAISHI.mp3" type="audio/mpeg">
+          お使いのブラウザは音声再生に対応していません。
+        </audio>
+      </section>
+
+      <section class="lyrics-panel" aria-label="歌詞">
+        <h2 class="lyrics-heading">LYRICS</h2>
+        <div class="lyrics">北海道、網走。
+鉄格子を越え、雪原を駆け、 
+今宵、一人の男が現れた。
+
+その名は――高石。
+同志よ、旗を掲げろ。 革命は、まだ来ない。
+
+中学、高校、六年の檻 男子校で磨いた孤高の意志 難関試験を突破して 学生デスクに座る若き闘士
+
+赤い思想を胸に抱き やがて現場へ身を投げた 運送労働で鍛えた腕に 来たる革命の夢を乗せた
+
+昼は運び　夜は語る 誰も知らない未来を語る 筋肉の奥に燃える炎 資本主義よ　震えて眠れ
+
+立てよ、高石！　旗を掲げろ！ 
+まだ見ぬ世界を切り開け！ 
+作るインフラ　壊す国家
+矛盾こそが革命の花！
+
+赤旗を振れ！　同志よ叫べ！ 
+歴史の歯車を回すのだ！ 
+オー、レボリューション！
+来るのか来ないのか！
+
+バリ、ジャカルタ、2016 スーパーに響く勝利の凱歌 ゲイ・チャン氏を捕獲して オープンカーへの道を開く
+
+2019　エジプトの空 岩村と旅した異国の地 「絵葉書を日本へ送ろう」 
+その言葉から始まる悲劇
+
+蚊を叩き潰し　テープで封印 絵葉書に添えた異文化交流 学びはしない　征服するのだ 異国の蚊まで祖国へ送れ！
+
+立てよ、高石！　旗を掲げろ！ 
+まだ見ぬ世界を切り開け！ 
+作るインフラ　壊す国家
+矛盾こそが革命の花！
+
+赤旗を振れ！　同志よ叫べ！ 
+歴史の歯車を回すのだ！
+オー、レボリューション！ 
+蚊の運命も国家の運命も！
+
+運行管理を経て　建設現場へ 道路を作って　国を壊す 2024　札幌の夜 ストーリーに踊る虚構の企業名
+
+グループ会社が本体になる 一つの投稿で真実が揺れる 大衆を動かすその指先 フェイクニュースさえ革命の道具！
+
+若葉！　エコー！ マルクス！　赤旗！ 
+その先に待つ未来は何だ？
+
+ワンカッパーか ブルーシーターか 同志よ、答えはまだ出ない！
+
+立てよ、高石！　旗を掲げろ！ 
+網走の空から世界を変えろ！ 
+作るインフラ　壊す国家
+矛盾を抱いて突き進め！
+
+岩村よ来い！　論戦の舞台へ！ 
+虚空の同志と火花を散らせ！ 
+レフト・アンド・ライト！ 決着の日まで！
+
+革命は近い。
+高石。
+次は、どこの国家を壊すのか。</div>
+      </section>
+    </div>
+    <p class="note">PERSONAL MUSIC PLAYER</p>
+  </main>
+ <script>
+function skipAudio(seconds) {
+  const audio = document.getElementById("music-player");
+
+  if (!audio || !Number.isFinite(audio.duration)) return;
+
+  const nextTime = audio.currentTime + seconds;
+
+  audio.currentTime = Math.max(
+    0,
+    Math.min(nextTime, audio.duration)
+  );
+}
+</script>
+</body>
+</html>
